@@ -15,15 +15,18 @@ enum Gender {
 }
 enum OrderStatus {
 	beforePayment // 미결제
-	cancelled // 배송전 취소 신청
 	overPaid // 결제 금액 초과
-	overRefunded // 환불 금액 초과
-	paid // 결제 완료
-	partiallyRefunded // 부분 반품 완료
-	placed // 배송완료
-	refunded // 반품 완료
 	underPaid // 결제 금액 미달
+	paid // 결제 완료
+
+	partiallyRefunded // 부분 반품 완료
+	overRefunded // 환불 금액 초과
 	underRefunded // 환불 금액 미달
+
+	refunded // 반품 완료
+	placed // 배송완료
+
+	cancelled // 취소 완료
 	done // 주문 완료
 }
 enum ExchangeStatus {
@@ -34,8 +37,9 @@ enum ExchangeStatus {
 }
 enum RefundStatus {
 	accepted // 반품 승인
-	cancelled // 반품 반려
+	cancelled // 반품 취소
 	requested // 반품 요청
+	return // 반품 신청 반려
 }
 enum ProductType {
   	normal
