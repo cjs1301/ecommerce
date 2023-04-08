@@ -15,5 +15,5 @@ export class CartBundleItemResDto {
     @ApiProperty({ example: 3 })
     quantity: number;
     @ApiProperty({ type: BundleItemProductResDto })
-    product: BundleItemProductResDto;
+    product: BundleItemProductResDto | null;
 }

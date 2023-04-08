@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../infrastructure/database/prisma.service';
+import { PrismaService } from '@infrastructure/database/prisma.service';
 import { OrderStatus } from '@prisma/client';
 import { UpdatePayment } from '../dto/update-payment.dto';
 
@@ -85,7 +85,11 @@ export class PaymentsRepository {
 
     async findByCustomerIdAndUpdate(
         customerId: string,
-        { vbank_num, vbank_date, vbank_name },
+        {
+            vbank_num,
+            vbank_date,
+            vbank_name,
+        }: { vbank_num: number; vbank_date: Date; vbank_name: string },
     ) {
         return this.prisma.customer.update({
             where: { id: customerId },

@@ -1,9 +1,8 @@
-import { DiscountType, ProductType } from '@prisma/client';
+import { DiscountType } from '@prisma/client';
 
 export class Product {
     constructor(
         private id: string,
-        private type: ProductType,
         // 상품의 구매 가능 여부입니다.
         private available: boolean,
         // 상품의 썸네일입니다.

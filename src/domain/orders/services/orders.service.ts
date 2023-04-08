@@ -27,11 +27,6 @@ export class OrdersService {
 
     async cancelForMe(orderId: string, reason: string) {
         const order = await this.ordersRepository.findOne(orderId);
-        if (!order) {
-            throw new BadRequestException(
-                orderId + ' 의 주문 정보를 찾을 수 없습니다',
-            );
-        }
         const canceledEnableStatus = [
             'paid',
             'overPaid',
@@ -45,12 +40,14 @@ export class OrdersService {
         }
         const refundStatus = ['paid', 'overPaid', 'underPaid'];
         if (refundStatus.includes(order.status)) {
+            if (!order.payment)
+                throw new BadRequestException('결제 정보가 없습니다.');
             //환불 신청하기
             await this.paymentsService.paymentCancel(
                 order.customerId,
                 orderId,
                 order.payment.amount,
-                order.discount.point || 0,
+                order.discount?.point || 0,
                 reason,
             );
         }

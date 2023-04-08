@@ -6,10 +6,9 @@ import { PrismaModule } from '@infrastructure/database/prisma.module';
 import { FileModule } from '../file/file.module';
 import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 import { CqrsModule } from '@nestjs/cqrs';
-import { CreatePersonalizedProductHandler } from './application/command/create-personalized-product.handler';
 import { ProductsRepository } from './infra/db/repository/products.repository';
 
-const commandHandlers = [CreatePersonalizedProductHandler];
+// const commandHandlers = [];
 
 // const queryHandlers = [];
 //
@@ -27,7 +26,7 @@ const repositories = [
     imports: [PrismaModule, FileModule, InfrastructureModule, CqrsModule],
     controllers: [ProductsController],
     providers: [
-        ...commandHandlers,
+        // ...commandHandlers,
         // ...queryHandlers,
         // ...eventHandlers,
         // ...factories,

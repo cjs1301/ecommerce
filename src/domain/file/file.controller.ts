@@ -14,15 +14,12 @@ import {
     ApiOperation,
     ApiResponse,
     ApiTags,
-    getSchemaPath,
 } from '@nestjs/swagger';
 import { FileService } from './file.service';
 import { Express } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '../../core/common/decorators/roles.decorator';
-import { Role } from '../../application/auth/dto/role.enum';
-import { UploadResDto } from './dto/res/upload.res.dto';
-import { ApiSingleDataResponse } from '../../core/common/decorators/success-res.decorator';
+import { Roles } from '@application/auth/decorators/roles.decorator';
+import { Role } from '@application/auth/dto/role.enum';
 
 @Controller()
 export class FileController {

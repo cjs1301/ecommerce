@@ -18,11 +18,11 @@ export class CheckoutResDto {
     @ApiProperty()
     price: number;
     @ApiProperty({ type: Discount })
-    discount: Discount;
+    discount: Discount | null;
     @ApiProperty({ enum: OrderStatus })
     status: OrderStatus;
     @ApiProperty()
-    request: string;
+    request: string | null;
     @ApiProperty()
     createdAt: Date;
     @ApiProperty()

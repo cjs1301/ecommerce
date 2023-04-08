@@ -1,5 +1,5 @@
 import { FulfillmentStatus } from '@prisma/client';
-import { FulfillmentItemResDto } from '../../../../core/common/exception/fulfillment-item.res.dto';
+import { FulfillmentItemResDto } from './fulfillment-item.res.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetFulfillmentsResDto {

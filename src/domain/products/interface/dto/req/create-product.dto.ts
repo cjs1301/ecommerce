@@ -8,25 +8,12 @@ import {
     IsOptional,
     IsString,
 } from 'class-validator';
-import { CreateOption } from './create-option.dto';
+import { CreateOptionDto } from './create-option.dto';
 import { CreateBundleDto } from './bundle.dto';
-import { DiscountType, ProductType } from '@prisma/client';
+import { DiscountType } from '@prisma/client';
 import { CreateCategoryDto } from './create-category.dto';
 
 export class CreateProductDto {
-    @ApiProperty({ example: null })
-    @IsBoolean()
-    @IsOptional()
-    isStandard: boolean | null;
-
-    @ApiProperty({
-        example: 'personalized | normal | bundle',
-        enum: ProductType,
-        required: true,
-    })
-    @IsEnum(ProductType)
-    type: ProductType;
-
     @ApiProperty({
         example:
             'https://actibiome-image.s3.ap-northeast-2.amazonaws.com/products/images/1670393090850+-+actibiome_product_1.png',
@@ -102,10 +89,10 @@ export class CreateProductDto {
     @IsArray()
     categories: CreateCategoryDto[];
 
-    @ApiProperty({ type: [CreateOption], required: false })
+    @ApiProperty({ type: [CreateOptionDto], required: false })
     @IsOptional()
     @IsArray()
-    options: CreateOption[] = [];
+    options: CreateOptionDto[] = [];
 
     @ApiProperty({ type: [CreateBundleDto], required: false })
     @IsOptional()

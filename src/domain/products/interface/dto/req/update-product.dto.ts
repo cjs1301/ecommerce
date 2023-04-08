@@ -1,29 +1,19 @@
-import { ProductType, DiscountType } from '@prisma/client';
+import { DiscountType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import {
     IsArray,
     IsBoolean,
     IsEnum,
-    IsJSON,
     IsNumber,
     IsOptional,
     IsString,
 } from 'class-validator';
-import { UpdateOption } from './update-option.dto';
+import { UpdateOptionDto } from './update-option.dto';
 import { UpdateBundleDto } from './bundle.dto';
 import { DeleteId } from './delete-id.dto';
 import { CreateCategoryDto } from './create-category.dto';
 
 export class UpdateProductDto {
-    @ApiProperty({
-        example: 'personalized | normal | bundle',
-        enum: ProductType,
-        required: false,
-    })
-    @IsEnum(ProductType)
-    @IsOptional()
-    type?: ProductType;
-
     @ApiProperty({ required: false })
     @IsBoolean()
     @IsOptional()
@@ -112,10 +102,10 @@ export class UpdateProductDto {
     @IsArray()
     categories?: CreateCategoryDto[];
 
-    @ApiProperty({ type: [UpdateOption], required: false })
+    @ApiProperty({ type: [UpdateOptionDto], required: false })
     @IsArray()
     @IsOptional()
-    options?: UpdateOption[];
+    options?: UpdateOptionDto[];
 
     @ApiProperty({ type: [UpdateBundleDto], required: false })
     @IsArray()

@@ -25,27 +25,32 @@ export class FulfillmentService {
         return this.fulfillmentRepository.createFulfillment(orderId, data);
     }
 
+    //TODO: 수정필요!!
     async orderCreateFulfillments(body: CreateFulfillments) {
-        const data = body.orders;
-        // 결제 완료된 주문내역인지 확인합니다.
+        /*// 결제 완료된 주문내역인지 확인합니다.
+        // 주문 아이디로 해당 주문에 해당하는 아이템 항목들의 아이디와 수량을 가져옵니다
         const orders = await this.ordersRepository.findAllByOrderIds(
-            data.map((el) => el.orderId),
+            body.orders.map((order) => order.orderId),
+            {
+                id: true,
+                status: true,
+                items: {
+                    select: { id: true, quantity: true },
+                },
+            },
         );
 
         const createFulfillmentsEnableStatus = ['paid', 'overPaid'];
         orders.forEach((order) => {
-            if (!createFulfillmentsEnableStatus.includes(order.status)) {
+            if (
+                !order.status ||
+                !createFulfillmentsEnableStatus.includes(order.status)
+            ) {
                 throw new BadRequestException(
                     order.id + '는 결제 완료된 상태가 아닙니다.',
                 );
             }
         });
-
-        // 주문 아이디로 해당 주문에 해당하는 아이템 항목들의 아이디와 수량을 가져옵니다
-        const orderInItems =
-            await this.ordersRepository.findAllOrdersInItemIdsAndQuantity(
-                data.map((el) => el.orderId),
-            );
         // 여러 주문들에 대한 배송내역을 생성하기위해 필요한 데이터 셋입니다
         const dataSet: Array<{
             itemId: string;
@@ -54,10 +59,10 @@ export class FulfillmentService {
             trackingCompany: string;
         }> = [];
         // 배송 이행 내역 생성을 위해 필요한 항목들 형태로 만들어 줍니다
-        orderInItems.forEach((orderInItem) => {
-            orderInItem.items.forEach((item) => {
-                const createFulfillment = data.find(
-                    (el) => el.orderId === item.id,
+        orders.forEach((order) => {
+            order.items?.forEach((item) => {
+                const createFulfillment = body.orders.find(
+                    (order) => order.orderId === item.id,
                 );
                 dataSet.push({
                     itemId: item.id,
@@ -68,7 +73,7 @@ export class FulfillmentService {
             });
         });
         // 주문 배송이행 내역 생성
-        return this.ordersRepository.createManyFulfillment(dataSet);
+        return this.ordersRepository.createManyFulfillment(dataSet);*/
     }
 
     async orderUpdateFulfillment(orderId: string, data: UpdateFulfillment) {

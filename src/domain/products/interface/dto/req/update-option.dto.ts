@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
-import { UpdateVariant } from './update-variant.dto';
+import { UpdateVariantDto } from './update-variant.dto';
 
-export class UpdateOption {
+export class UpdateOptionDto {
     @ApiProperty({ description: '옵션 아이디' })
     @IsString()
     id: string;
     @ApiProperty({ description: '옵션 이름' })
     @IsString()
     name: string;
-    @ApiProperty({ type: [UpdateVariant] })
+    @ApiProperty({ type: [UpdateVariantDto] })
     @IsArray()
-    variations: UpdateVariant[];
+    variations: UpdateVariantDto[];
 }

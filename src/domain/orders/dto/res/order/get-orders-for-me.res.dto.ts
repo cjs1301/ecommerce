@@ -21,13 +21,13 @@ export class GetOrdersForMeResDto {
     @ApiProperty()
     id: string;
     @ApiProperty({ type: Payment, required: false })
-    payment?: Payment;
+    payment?: Payment | null;
     @ApiProperty({ required: false })
     request: string | null;
     @ApiProperty({ enum: OrderStatus })
     status: OrderStatus;
     @ApiProperty({ type: ShippingAdressResDto, required: false })
-    shippingAddress?: ShippingAdressResDto;
+    shippingAddress?: ShippingAdressResDto | null;
     @ApiProperty({ type: [OrderItemResDto], required: false })
     items?: GetOrderItemsForMeResDto[];
     @ApiProperty()

@@ -1,13 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { CartRepository } from '../repository/cart.repository';
 import { AddCartItem } from '../dto/req/add-cartItem.dto';
-import { UpdateCartItem } from '../dto/req/update-cart-item.dto';
 import { CreateOrder } from '../../orders/dto/req/create-order.dto';
 import { CheckoutReqDto } from '../dto/req/checkout.req.dto';
-import { UpdateCartItemOption } from '../dto/req/update-cart-item-option.dto';
-import { UpdateCartBundleItem } from '../dto/req/update-cart-bundle-item.dto';
 import { CreateOrderOnProduct } from '../../orders/dto/req/create-order-on-product.dto';
 import { CartItemResDto } from '../dto/res/cart-item.res.dto';
+import { CustomersRepository } from '../../users/customers/repository/customers.repository';
 
 interface CheckItem {
     quantity: number;
@@ -15,7 +13,10 @@ interface CheckItem {
 }
 @Injectable()
 export class CartService {
-    constructor(private readonly cartRepository: CartRepository) {}
+    constructor(
+        private readonly cartRepository: CartRepository,
+        private readonly customersRepository: CustomersRepository,
+    ) {}
 
     //cartItem(cartOnProduct) select 옵션
     private readonly select = {
@@ -101,14 +102,6 @@ export class CartService {
         return this.cartRepository.deleteAll(customerId);
     }
 
-    async cartUpdateItem(itemId: string, body: UpdateCartItem) {
-        return this.cartRepository.updateCartItem(itemId, body, this.select);
-    }
-
-    async cartUpdateItemOption(itemId: string, body: UpdateCartItemOption[]) {
-        return '작동하지 않습니다';
-    }
-
     async deleteCartItem(customerId: string, itemIds: string[]) {
         if (itemIds.length === 0) {
             return this.cartRepository.deleteAll(customerId);
@@ -120,21 +113,51 @@ export class CartService {
         let items: Array<CreateOrderOnProduct>;
         if (body.items.length === 0) {
             // body에 빈배열로 보낼경우 내 카트상품들을 모두 주문한다
-            const { cart, point } =
-                await this.cartRepository.findCustomerByIdWithCartAndPoint(
-                    customerId,
-                );
-            items = cart.items.map((el) => {
-                return {
-                    productId: el.product.id,
-                    quantity: el.quantity,
-                    customId: el.customId,
-                    bundleItems: el.bundleItems || [],
-                    options: el.options || [],
-                };
-            });
+            const customer = await this.customersRepository.findOneById(
+                customerId,
+                {
+                    point: true,
+                    cart: {
+                        select: {
+                            items: {
+                                select: {
+                                    product: {
+                                        select: {
+                                            id: true,
+                                        },
+                                    },
+                                    quantity: true,
+                                    customId: true,
+                                    bundleItems: {
+                                        select: {
+                                            productId: true,
+                                            quantity: true,
+                                        },
+                                    },
+                                    options: {
+                                        select: {
+                                            productOptionId: true,
+                                            variantId: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            );
+            items =
+                customer.cart?.items.map((el) => {
+                    return {
+                        productId: el.product?.id || '',
+                        quantity: el.quantity,
+                        customId: el.customId,
+                        bundleItems: el.bundleItems || [],
+                        options: el.options || [],
+                    };
+                }) || [];
 
-            if (body.usePoint > 0 && body.usePoint > point)
+            if (body.usePoint > 0 && body.usePoint > customer.point)
                 throw new BadRequestException(
                     '사용하려는 포인트가 보유포인트보다 많습니다.',
                 );
@@ -148,10 +171,12 @@ export class CartService {
         } else {
             // 직접 넣어준 상품들로 주문한다
             items = body.items;
-            const { point } =
-                await this.cartRepository.findOneCustomerByIdWithPoint(
-                    customerId,
-                );
+            const { point } = await this.customersRepository.findOneById(
+                customerId,
+                {
+                    point: true,
+                },
+            );
             if (body.usePoint > 0 && body.usePoint > point)
                 throw new BadRequestException(
                     '사용하려는 포인트가 보유포인트보다 많습니다.',
@@ -167,9 +192,9 @@ export class CartService {
     }
 
     private async createOrder(
-        items,
-        body,
-        customerId,
+        items: any,
+        body: any,
+        customerId: string,
         withMyCart: boolean,
         usePoint: number,
     ) {
@@ -192,7 +217,7 @@ export class CartService {
      * @param items
      */
     private async checkProductsBeforeCheckOut(items: CreateOrderOnProduct[]) {
-        const productIds = [];
+        const productIds: { id: string }[] = [];
         // 주문 하려 하는 아이템들의 상품과 그 추가 사품의 모든 아이디를 배열에 담습니다
         items.forEach((item) => {
             productIds.push({ id: item.productId });

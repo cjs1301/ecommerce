@@ -14,7 +14,7 @@ export class OrderItemResDto {
     @ApiProperty()
     customId: string;
     @ApiProperty({ type: ItemProductRes })
-    product: ItemProductRes;
+    product: ItemProductRes | null;
     @ApiProperty({ type: OrderFulfillmentResDto, required: false })
     fulfillment?: OrderFulfillmentResDto | null;
     @ApiProperty({ type: OrderRefundResDto, required: false })

@@ -4,16 +4,16 @@ import { PrismaService } from '../../../../infrastructure/database/prisma.servic
 import { CreateAddress } from '../dto/req/create-address.dto';
 import { UpdateCustomer } from '../dto/req/update-customer.dto';
 import { UpdateAddress } from '../dto/req/update-address.dto';
-import { CustomerIncludeOption } from '../dto/req/query-customer.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CustomersRepository {
     constructor(private prisma: PrismaService) {}
 
-    async findOneById(id: string, includeOption: CustomerIncludeOption) {
+    async findOneByIdWithInclude(id: string, include: Prisma.CustomerInclude) {
         try {
-            const include =
-                Object.keys(includeOption).length === 0 ? null : includeOption;
+            // const include =
+            //     Object.keys(includeOption).length === 0 ? null : includeOption;
             return this.prisma.customer.findUnique({
                 where: { id: id },
                 include,
@@ -23,6 +23,12 @@ export class CustomersRepository {
         }
     }
 
+    async findOneById(id: string, select: Prisma.CustomerSelect) {
+        return this.prisma.customer.findUniqueOrThrow({
+            where: { id: id },
+            select,
+        });
+    }
     async findOneByOauthId(oauthId: string) {
         const findMap = Object.create({
             kakao: { kakaoId: oauthId },

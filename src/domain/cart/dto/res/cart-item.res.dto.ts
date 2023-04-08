@@ -7,13 +7,13 @@ class AddCartItemProductResDto {
     @ApiProperty({ example: '개인화 화장품(테스트)' })
     name: string;
     @ApiProperty({ required: false })
-    summary?: string;
+    summary?: string | null;
     @ApiProperty()
     price: number;
     @ApiProperty({ enum: DiscountType, required: false })
-    discountType?: DiscountType;
+    discountType?: DiscountType | null;
     @ApiProperty({ required: false })
-    discountValue?: number;
+    discountValue?: number | null;
 }
 
 export class CartItemResDto {
@@ -28,7 +28,7 @@ export class CartItemResDto {
     @ApiProperty({ required: false })
     options?: any[];
     @ApiProperty({ type: AddCartItemProductResDto })
-    product: AddCartItemProductResDto;
+    product: AddCartItemProductResDto | null;
     @ApiProperty()
-    addedAt: Date;
+    addedAt: Date | null;
 }

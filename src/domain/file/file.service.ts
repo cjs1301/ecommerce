@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Response } from 'express';
 import AWS from 'aws-sdk';
 
 @Injectable()
@@ -9,7 +8,7 @@ export class FileService {
         try {
             return this.uploadS3(
                 file.buffer,
-                `actibiome-product-image-${
+                `product-image-${
                     process.env.NODE_ENV === 'prod' ? 'prod' : 'dev'
                 }`,
                 file.originalname,
@@ -26,7 +25,7 @@ export class FileService {
             for (const [index, file] of files.entries()) {
                 const upload = this.uploadS3(
                     file.buffer,
-                    `actibiome-product-image-${
+                    `product-image-${
                         process.env.NODE_ENV === 'prod' ? 'prod' : 'dev'
                     }`,
                     file.originalname,
