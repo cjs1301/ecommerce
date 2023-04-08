@@ -1,8 +1,4 @@
-import {
-    BadRequestException,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CustomersRepository } from '../repository/customers.repository';
 import { UpdateCustomer } from '../dto/req/update-customer.dto';
 import { OauthUser } from '@application/auth/dto/auth.interface';
@@ -26,7 +22,7 @@ export class CustomersService {
      * @param {string} include
      * */
     async getCustomer(customerId: string, include: CustomerIncludeOption) {
-        const customer = await this.customersRepository.findOneById(
+        const customer = await this.customersRepository.findOneByIdWithInclude(
             customerId,
             include,
         );
@@ -35,22 +31,6 @@ export class CustomersService {
             throw new BadRequestException(`${customerId}를 찾을 수 없습니다.`);
         }
 
-        return customer;
-    }
-
-    async findById(customerId: string) {
-        const customer = await this.customersRepository.findOneById(
-            customerId,
-            {},
-        );
-
-        if (!customer) {
-            throw new BadRequestException(`${customerId}를 찾을 수 없습니다.`);
-        }
-        // jwt.guard에서 회원탐색을 할때 활성화 안된 유저를 필터링
-        if (!customer.isActive) {
-            return new BadRequestException('활성화 되지 않은 회원입니다');
-        }
         return customer;
     }
 

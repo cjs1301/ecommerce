@@ -23,7 +23,6 @@ export class ImpWebhookController {
                 return;
             default:
                 throw new ForbiddenException('허가되가 되지 않은 ip입니다');
-                break;
         }
     }
 }

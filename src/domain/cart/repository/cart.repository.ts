@@ -6,6 +6,7 @@ import { UpdateCartItem } from '../dto/req/update-cart-item.dto';
 import { CheckoutResDto } from '../dto/res/checkout.res.dto';
 import { PointService } from '../../point/services/point.service';
 import { CartItemResDto } from '../dto/res/cart-item.res.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CartRepository {
@@ -13,15 +14,6 @@ export class CartRepository {
         private readonly prisma: PrismaService,
         private readonly pointService: PointService,
     ) {}
-
-    async findOneCustomerByIdWithPoint(customerId: string) {
-        return this.prisma.customer.findUnique({
-            where: { id: customerId },
-            select: {
-                point: true,
-            },
-        });
-    }
 
     async findOneCartByCustomerId(customerId: string) {
         return this.prisma.cart.upsert({
@@ -107,7 +99,7 @@ export class CartRepository {
     async cartItemQuantityIncrement(
         cartId: string,
         quantity: number,
-        select,
+        select: Prisma.CartSelect,
     ): Promise<CartItemResDto> {
         return this.prisma.cartOnProduct.update({
             where: {
@@ -168,7 +160,7 @@ export class CartRepository {
     async createCartItem(
         cartId: string,
         data: AddCartItem,
-        select,
+        select: Prisma.CartSelect,
     ): Promise<CartItemResDto> {
         return this.prisma.cartOnProduct.create({
             data: {
@@ -236,22 +228,6 @@ export class CartRepository {
         });
     }
 
-    async updateCartItem(itemId: string, data: UpdateCartItem, select) {
-        try {
-            return this.prisma.cartOnProduct.update({
-                where: {
-                    id: itemId,
-                },
-                data: {
-                    ...data,
-                },
-                select,
-            });
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async deleteCartOnProduct(customerId: string, itemIds: string[]) {
         try {
             const itemList = itemIds.map((el) => {
@@ -270,42 +246,6 @@ export class CartRepository {
     async deleteAll(customerId: string) {
         return this.prisma.cart.deleteMany({
             where: { customerId: customerId },
-        });
-    }
-
-    async findCustomerByIdWithCartAndPoint(customerId: string) {
-        return this.prisma.customer.findUnique({
-            where: { id: customerId },
-            select: {
-                point: true,
-                cart: {
-                    select: {
-                        items: {
-                            select: {
-                                product: {
-                                    select: {
-                                        id: true,
-                                    },
-                                },
-                                quantity: true,
-                                customId: true,
-                                bundleItems: {
-                                    select: {
-                                        productId: true,
-                                        quantity: true,
-                                    },
-                                },
-                                options: {
-                                    select: {
-                                        productOptionId: true,
-                                        variantId: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
         });
     }
 

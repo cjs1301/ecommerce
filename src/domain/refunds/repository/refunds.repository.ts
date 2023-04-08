@@ -224,7 +224,6 @@ export class RefundsRepository {
                         product: {
                             select: {
                                 id: true,
-                                type: true,
                                 name: true,
                                 thumbnail: true,
                             },

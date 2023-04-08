@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaymentComplete } from '../dto/payment-complete.dto';
 import axios from 'axios';
 import { PaymentsRepository } from '../repository/payments.repository';
@@ -30,6 +30,9 @@ export class PaymentsService {
         const order = await this.paymentsRepository.OrdersFindById(
             paymentData.merchant_uid,
         );
+        if (!order.payment) {
+            throw new BadRequestException('결제정보가 없습니다.');
+        }
         const amountToBePaid = order.payment.amount; // 결제 되어야 하는 금액
         // 결제 검증하기
         const { amount, status } = paymentData;
@@ -47,7 +50,11 @@ export class PaymentsService {
                     const { vbank_num, vbank_date, vbank_name } = paymentData;
                     await this.paymentsRepository.findByCustomerIdAndUpdate(
                         order.customerId,
-                        { vbank_num, vbank_date, vbank_name },
+                        {
+                            vbank_num: Number(vbank_num),
+                            vbank_date: new Date(vbank_date),
+                            vbank_name,
+                        },
                     );
                     // 가상계좌 발급 안내 문자메시지 발송
                     // SMS.send({
@@ -157,17 +164,21 @@ export class PaymentsService {
     }
     //------------------------------------------------------------------------
     private async getToken() {
-        const getToken = await axios({
-            url: 'https://api.iamport.kr/users/getToken',
-            method: 'post', // POST method
-            headers: { 'Content-Type': 'application/json' }, // "Content-Type": "application/json"
-            data: {
-                imp_key: process.env.IAMPORT_API_KEY, // REST API 키
-                imp_secret: process.env.IAMPORT_API_SECRET, // REST API Secret
-            },
-        });
-        const { access_token } = getToken.data.response;
-        return access_token;
+        try {
+            const getToken = await axios({
+                url: 'https://api.iamport.kr/users/getToken',
+                method: 'post', // POST method
+                headers: { 'Content-Type': 'application/json' }, // "Content-Type": "application/json"
+                data: {
+                    imp_key: process.env.IAMPORT_API_KEY, // REST API 키
+                    imp_secret: process.env.IAMPORT_API_SECRET, // REST API Secret
+                },
+            });
+            const { access_token } = getToken.data.response;
+            return access_token;
+        } catch (e) {
+            throw e;
+        }
     }
 
     private async getPaymentData(

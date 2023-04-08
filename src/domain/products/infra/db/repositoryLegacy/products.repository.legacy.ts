@@ -3,7 +3,6 @@ import { PrismaService } from '@infrastructure/database/prisma.service';
 import { UpdateProductDto } from '../../../interface/dto/req/update-product.dto';
 import { CreateProductDto } from '../../../interface/dto/req/create-product.dto';
 import cuid from 'cuid';
-import { GetProductsQueryDto } from '../../../interface/dto/req/get-products.query.dto';
 import { GetProductResDto } from '../../../interface/dto/res/get-product.res.dto';
 import { GetProductsResDto } from '../../../interface/dto/res/get-products.res.dto';
 
@@ -11,7 +10,7 @@ import { GetProductsResDto } from '../../../interface/dto/res/get-products.res.d
 export class ProductsRepositoryLegacy {
     constructor(private prisma: PrismaService) {}
 
-    async create(data: CreateProductDto) /*: Promise<GetProductResDto>*/ {
+    async create(data: CreateProductDto): Promise<GetProductResDto> {
         try {
             const productId = cuid();
             return this.prisma.product.create({
@@ -88,7 +87,6 @@ export class ProductsRepositoryLegacy {
                 },
                 select: {
                     id: true,
-                    type: true,
                     thumbnail: true,
                     available: true,
                     name: true,
@@ -144,7 +142,6 @@ export class ProductsRepositoryLegacy {
                         },
                     },
                     meta: true,
-                    isStandard: true,
                     createdAt: true,
                     updatedAt: true,
                     deleted: true,
@@ -154,16 +151,10 @@ export class ProductsRepositoryLegacy {
             throw error;
         }
     }
-    async findAll(query: GetProductsQueryDto): Promise<GetProductsResDto[]> {
+    async findAll(): Promise<GetProductsResDto[]> {
         return this.prisma.product.findMany({
-            where: {
-                type: {
-                    in: query.type,
-                },
-            },
             select: {
                 id: true,
-                type: true,
                 available: true,
                 thumbnail: true,
                 name: true,
@@ -175,41 +166,6 @@ export class ProductsRepositoryLegacy {
                 discountType: true,
                 discountValue: true,
                 quantity: true,
-                options: {
-                    select: {
-                        id: true,
-                        name: true,
-                        variations: {
-                            select: {
-                                id: true,
-                                value: true,
-                            },
-                        },
-                    },
-                },
-                bundles: {
-                    select: {
-                        id: true,
-                        name: true,
-                        required: true,
-                        items: {
-                            select: {
-                                id: true,
-                                product: {
-                                    select: {
-                                        id: true,
-                                        name: true,
-                                        summary: true,
-                                        available: true,
-                                        price: true,
-                                        quantity: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-                isStandard: true,
                 meta: true,
                 categories: {
                     select: {
@@ -226,12 +182,11 @@ export class ProductsRepositoryLegacy {
     async delete(productId: string) {
         return this.prisma.product.delete({ where: { id: productId } });
     }
-    async findOne(productId: string) /*: Promise<GetProductResDto>*/ {
-        return this.prisma.product.findUnique({
+    async findOne(productId: string): Promise<GetProductResDto> {
+        return this.prisma.product.findUniqueOrThrow({
             where: { id: productId },
             select: {
                 id: true,
-                type: true,
                 available: true,
                 thumbnail: true,
                 name: true,
@@ -277,7 +232,6 @@ export class ProductsRepositoryLegacy {
                         },
                     },
                 },
-                isStandard: true,
                 meta: true,
                 categories: {
                     select: {
@@ -294,7 +248,7 @@ export class ProductsRepositoryLegacy {
     async update(
         productId: string,
         data: UpdateProductDto,
-    ) /*: Promise<GetProductResDto>*/ {
+    ): Promise<GetProductResDto> {
         try {
             //-----------------------------
             return this.prisma.product.update({
@@ -335,7 +289,7 @@ export class ProductsRepositoryLegacy {
                     options: data.options
                         ? {
                               deleteMany: data.deleteOptions,
-                              upsert: data.options?.map((el) => {
+                              upsert: data.options.map((el) => {
                                   // options
                                   return {
                                       where: { id: el.id },
@@ -345,7 +299,9 @@ export class ProductsRepositoryLegacy {
                                               deleteMany: data.deleteVariations,
                                               upsert: el.variations.map((x) => {
                                                   return {
-                                                      where: { id: x.id },
+                                                      where: {
+                                                          id: x.id,
+                                                      },
                                                       update: {
                                                           value: x.value,
                                                       },
@@ -422,7 +378,6 @@ export class ProductsRepositoryLegacy {
                 },
                 select: {
                     id: true,
-                    type: true,
                     available: true,
                     thumbnail: true,
                     name: true,
@@ -468,7 +423,6 @@ export class ProductsRepositoryLegacy {
                             },
                         },
                     },
-                    isStandard: true,
                     meta: true,
                     categories: true,
                     createdAt: true,

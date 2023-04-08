@@ -5,11 +5,11 @@ import { ShippingAdressResDto } from './shipping-address.res.dto';
 import { OrderBundleItemResDto } from './order-item/bundle/order-bundle-item.res.dto';
 class CustomerRes {
     @ApiProperty({ example: '홍길동' })
-    name: string;
+    name: string | null;
     @ApiProperty({ example: 'abc@email.com' })
     email: string;
     @ApiProperty({ example: '01012341234' })
-    mobile: string;
+    mobile: string | null;
 }
 
 export class GetOrdersResDto {
@@ -18,7 +18,7 @@ export class GetOrdersResDto {
     @ApiProperty()
     price: number;
     @ApiProperty({ required: false })
-    request?: string;
+    request?: string | null;
     @ApiProperty({ enum: OrderStatus })
     status: OrderStatus;
     @ApiProperty({ type: CustomerRes })
@@ -26,7 +26,7 @@ export class GetOrdersResDto {
     @ApiProperty({ type: [OrderBundleItemResDto], required: false })
     bundleItems?: OrderBundleItemResDto[] | [];
     @ApiProperty({ type: ShippingAdressResDto })
-    shippingAddress?: ShippingAdressResDto;
+    shippingAddress?: ShippingAdressResDto | null;
     @ApiProperty({ type: [OrderItemResDto] })
     items?: OrderItemResDto[];
     @ApiProperty()

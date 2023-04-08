@@ -1,14 +1,8 @@
-import { ProductType, DiscountType, Product, Prisma } from '@prisma/client';
+import { DiscountType, Product, Prisma } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 export class ProductEntity implements Product {
     id: string;
 
-    @ApiProperty({
-        example: 'personalized | normal | bundle',
-        enum: ProductType,
-        required: true,
-    })
-    type: ProductType;
     @ApiProperty({
         example:
             'https://actibiome-image.s3.ap-northeast-2.amazonaws.com/products/images/1670393090850+-+actibiome_product_1.png',
@@ -44,9 +38,6 @@ export class ProductEntity implements Product {
     discountValue: number | null;
     @ApiProperty({ example: '100' })
     quantity: number;
-
-    @ApiProperty({ example: null })
-    isStandard: boolean | null;
 
     brandId: string | null;
     meta: Prisma.JsonValue | null;

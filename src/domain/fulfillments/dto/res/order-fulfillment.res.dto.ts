@@ -7,9 +7,9 @@ export class OrderFulfillmentResDto {
     @ApiProperty()
     trackingCompany: string;
     @ApiProperty({ required: false })
-    trackingUid?: string;
+    trackingUid?: string | null;
     @ApiProperty({ required: false })
-    trackingUrl?: string;
+    trackingUrl?: string | null;
     @ApiProperty()
     quantity: number;
     @ApiProperty({ enum: FulfillmentStatus })

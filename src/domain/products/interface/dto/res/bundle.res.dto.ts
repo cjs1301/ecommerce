@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-class BundleProductRes {
+class BundleItemProductResDto {
     @ApiProperty()
     id: string;
     @ApiProperty()
@@ -17,8 +17,8 @@ class BundleProductRes {
     meta?: any;
 }
 class BundleItemResDto {
-    @ApiProperty({ type: BundleProductRes })
-    product: BundleProductRes;
+    @ApiProperty({ type: BundleItemProductResDto })
+    product?: BundleItemProductResDto | null;
 }
 
 export class BundleResDto {

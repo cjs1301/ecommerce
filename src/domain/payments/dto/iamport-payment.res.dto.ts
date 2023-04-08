@@ -44,8 +44,8 @@ export class IamportPaymentResDto {
     vbank_date: Date | 0;
     vbank_holder?: string;
     vbank_issued_at: Date | 0;
-    vbank_name?: string;
-    vbank_num?: string;
+    vbank_name: string;
+    vbank_num: string;
 }
 
 export enum IamportPaymentStatus {

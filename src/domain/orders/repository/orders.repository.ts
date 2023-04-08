@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../infrastructure/database/prisma.service';
+import { PrismaService } from '@infrastructure/database/prisma.service';
 import { GetOrdersQueryDto } from '../dto/req/get-orders.query.dto';
 import { UpdateOrderTransaction } from '../dto/req/update-order-transaction.dto';
-import { FulfillmentStatus } from '@prisma/client';
+import { FulfillmentStatus, Prisma } from '@prisma/client';
 import { GetOrdersForMeResDto } from '../dto/res/order/get-orders-for-me.res.dto';
 import { GetOrdersResDto } from '../dto/res/order/get-orders.res.dto';
+import { GetOrderResDto } from '../dto/res/order/get-order.res.dto';
 
 @Injectable()
 export class OrdersRepository {
@@ -65,7 +66,6 @@ export class OrdersRepository {
                         product: {
                             select: {
                                 id: true,
-                                type: true,
                                 thumbnail: true,
                                 summary: true,
                                 name: true,
@@ -78,7 +78,6 @@ export class OrdersRepository {
                                 product: {
                                     select: {
                                         id: true,
-                                        type: true,
                                         thumbnail: true,
                                         summary: true,
                                         name: true,
@@ -123,7 +122,6 @@ export class OrdersRepository {
     async findAllWithOption(
         query: GetOrdersQueryDto,
     ): Promise<GetOrdersResDto[]> {
-        console.log(query);
         return this.prisma.order.findMany({
             where: {
                 status: {
@@ -163,7 +161,6 @@ export class OrdersRepository {
                         product: {
                             select: {
                                 id: true,
-                                type: true,
                                 name: true,
                                 thumbnail: true,
                                 summary: true,
@@ -211,18 +208,19 @@ export class OrdersRepository {
         });
     }
 
-    async findAllByOrderIds(orderIds: string[]) {
+    async findAllByOrderIds(orderIds: string[], select: Prisma.OrderSelect) {
         return this.prisma.order.findMany({
             where: {
                 id: {
                     in: orderIds,
                 },
             },
+            select,
         });
     }
 
     async findOne(orderId: string) {
-        return this.prisma.order.findUnique({
+        return this.prisma.order.findUniqueOrThrow({
             where: { id: orderId },
             include: {
                 payment: true,
@@ -239,7 +237,7 @@ export class OrdersRepository {
 
     // 재고 복구, 취소 상태 변경
     async cancelOrder(orderId: string, reason: string) {
-        const order = await this.prisma.order.findUnique({
+        const order = await this.prisma.order.findUniqueOrThrow({
             where: { id: orderId },
             include: {
                 items: {
@@ -308,7 +306,7 @@ export class OrdersRepository {
         });
     }
 
-    async findOneWithIncludes(orderId: string) {
+    async findOneWithIncludes(orderId: string): Promise<GetOrderResDto> {
         return this.prisma.order.findUniqueOrThrow({
             where: { id: orderId },
             include: {

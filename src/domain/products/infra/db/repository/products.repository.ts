@@ -7,13 +7,10 @@ import { GetProductResDto } from '../../../interface/dto/res/get-product.res.dto
 export class ProductsRepository implements IProductsRepository {
     constructor(private prisma: PrismaService) {}
 
-    async findUniquePersonalized(): Promise<GetProductResDto> {
-        return this.prisma.product.findUnique({
+    async findUnique(productId: string): Promise<GetProductResDto> {
+        return this.prisma.product.findUniqueOrThrow({
             where: {
-                type_isStandard: {
-                    type: 'personalized',
-                    isStandard: true,
-                },
+                id: productId,
             },
             include: {
                 bundles: {

@@ -13,16 +13,16 @@ import { OrdersService } from '../services/orders.service';
 import { UpdateOrderTransaction } from '../dto/req/update-order-transaction.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetOrdersQueryDto } from '../dto/req/get-orders.query.dto';
-import { Roles } from '../../../core/common/decorators/roles.decorator';
-import { Role } from '../../../application/auth/dto/role.enum';
+import { Roles } from '@application/auth/decorators/roles.decorator';
+import { Role } from '@application/auth/dto/role.enum';
 import { GetOrdersResDto } from '../dto/res/order/get-orders.res.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '../../../core/common/decorators/success-res.decorator';
-import { JwtAuthGuard } from '../../../application/auth/guard/jwt.guard';
-import { RolesGuard } from '../../../application/auth/guard/roles.guard';
-import { OrderResDto } from '../dto/res/order/order.res.dto';
+} from '@common/decorators/success-res.decorator';
+import { JwtAuthGuard } from '@application/auth/guard/jwt.guard';
+import { RolesGuard } from '@application/auth/guard/roles.guard';
+import { GetOrderResDto } from '../dto/res/order/get-order.res.dto';
 
 @ApiTags('주문')
 @Controller('orders')
@@ -78,13 +78,13 @@ export class OrdersController {
     @Roles(Role.Master, Role.Manager)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @ApiBearerAuth('accessToken')
-    @ApiSingleDataResponse(200, OrderResDto)
+    @ApiSingleDataResponse(200, GetOrderResDto)
     @Get(':orderId')
     @ApiOperation({
         summary: '주문 상세',
         description: '주문 하나를 가져옵니다.',
     })
-    async getOrder(@Param('orderId') orderId: string): Promise<OrderResDto> {
+    async getOrder(@Param('orderId') orderId: string): Promise<GetOrderResDto> {
         return this.ordersService.getOrder(orderId);
     }
 

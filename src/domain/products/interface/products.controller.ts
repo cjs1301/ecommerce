@@ -17,15 +17,11 @@ import { Roles } from '@application/auth/decorators/roles.decorator';
 import { ProductsService } from '../servicesLegacy/products.service';
 import { UpdateProductDto } from './dto/req/update-product.dto';
 import { CreateProductDto } from './dto/req/create-product.dto';
-import { GetProductsQueryDto } from './dto/req/get-products.query.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
 } from '@common/decorators/success-res.decorator';
 import { GetProductResDto } from './dto/res/get-product.res.dto';
-import { CommandBus } from '@nestjs/cqrs';
-import { CreatePersonalizedProductDto } from './dto/req/create-personalized-product.dto';
-import { CreatePersonalizedProductCommand } from '../application/command/create-personalized-product.command';
 import { GetProductsResDto } from './dto/res/get-products.res.dto';
 
 @ApiTags('상품')
@@ -34,7 +30,6 @@ export class ProductsController {
     constructor(
         @Inject('ProductsService')
         private readonly productsService: ProductsService,
-        private commandBus: CommandBus,
     ) {}
 
     @ApiTags('어드민')
@@ -63,10 +58,8 @@ export class ProductsController {
         description: '상품 리스트를 조회합니다.',
     })
     @ApiMultipleDataResponse(200, GetProductsResDto)
-    async productList(
-        @Query() query: GetProductsQueryDto,
-    ): Promise<GetProductsResDto[]> {
-        return this.productsService.getAll(query);
+    async productList(): Promise<GetProductsResDto[]> {
+        return this.productsService.getAll();
     }
 
     @ApiTags('어드민', '서비스')
@@ -108,47 +101,8 @@ export class ProductsController {
     async productUpdate(
         @Param('productId') productId: string,
         @Body() body: UpdateProductDto,
-    ) /*: Promise<GetProductResDto>*/ {
+    ): Promise<GetProductResDto> {
         console.log(body);
         return this.productsService.update(productId, body);
-    }
-
-    @ApiTags('서비스')
-    @Post('personalized')
-    @ApiOperation({
-        summary: '맞춤형 화장품 생성(가져오기)',
-        description: '피부점수로 맞춤형 화장품을 골라옴니다.',
-    })
-    @ApiSingleDataResponse(201, GetProductResDto)
-    async createPersonalizedProduct(
-        @Body() body: CreatePersonalizedProductDto,
-    ): Promise<GetProductResDto> {
-        const {
-            elasticityScore,
-            breakoutScore,
-            sensitivityScore,
-            agingScore,
-            dehydrationScore,
-            odorScore,
-            darknessScore,
-            deadSkinScore,
-            recoveryScore,
-            itchyScore,
-            baseScore,
-        } = body;
-        const command = new CreatePersonalizedProductCommand(
-            elasticityScore,
-            breakoutScore,
-            sensitivityScore,
-            agingScore,
-            dehydrationScore,
-            odorScore,
-            darknessScore,
-            deadSkinScore,
-            recoveryScore,
-            itchyScore,
-            baseScore,
-        );
-        return this.commandBus.execute(command);
     }
 }

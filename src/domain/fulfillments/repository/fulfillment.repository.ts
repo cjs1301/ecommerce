@@ -117,7 +117,7 @@ export class FulfillmentRepository {
 
     async findAllWhitStatus(
         query: GetFulfillmentsQueryDto,
-    ): Promise<GetFulfillmentsResDto[]> {
+    ) /*: Promise<GetFulfillmentsResDto[]>*/ {
         return this.prisma.fulfillment.findMany({
             where: {
                 status: {
