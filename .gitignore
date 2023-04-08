@@ -69,7 +69,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-env/local.env
+../env/local.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -124,7 +124,7 @@ lerna-debug.log*
 /.nyc_output
 
 # IDEs and editors
-/.idea
+/nodeJs/.idea
 .project
 .classpath
 .c9/
@@ -152,3 +152,6 @@ lerna-debug.log*
 .idea/*
 
 .env
+
+# prisma build files
+src/prisma/*

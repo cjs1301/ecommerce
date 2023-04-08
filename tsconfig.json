@@ -8,13 +8,14 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "../dist",
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/core/*"],
+      "@common/*": ["src/common/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
       "@application/*": ["src/application/*"],
-      "@test/*": ["test/*"]
+      "@test/*": ["test/*"],
+      "@prisma/client": ["src/prisma/client/index"]
     },
     "incremental": true,
     "skipLibCheck": true,
