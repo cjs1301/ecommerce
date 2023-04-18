@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@infrastructure/database/prisma.service';
+import { PrismaService } from '../../../infrastructure/database/prisma.service';
 import { GetOrdersQueryDto } from '../dto/req/get-orders.query.dto';
 import { UpdateOrderTransaction } from '../dto/req/update-order-transaction.dto';
 import { FulfillmentStatus, Prisma } from '@prisma/client';

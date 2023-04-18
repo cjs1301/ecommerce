@@ -18,8 +18,8 @@ import {
 import { FileService } from './file.service';
 import { Express } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { Roles } from '@application/auth/decorators/roles.decorator';
-import { Role } from '@application/auth/dto/role.enum';
+import { Roles } from '../../application/auth/decorators/roles.decorator';
+import { Role } from '../../application/auth/dto/role.enum';
 
 @Controller()
 export class FileController {

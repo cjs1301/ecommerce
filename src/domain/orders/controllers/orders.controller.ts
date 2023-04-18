@@ -13,15 +13,15 @@ import { OrdersService } from '../services/orders.service';
 import { UpdateOrderTransaction } from '../dto/req/update-order-transaction.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetOrdersQueryDto } from '../dto/req/get-orders.query.dto';
-import { Roles } from '@application/auth/decorators/roles.decorator';
-import { Role } from '@application/auth/dto/role.enum';
+import { Roles } from '../../../application/auth/decorators/roles.decorator';
+import { Role } from '../../../application/auth/dto/role.enum';
 import { GetOrdersResDto } from '../dto/res/order/get-orders.res.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
-import { JwtAuthGuard } from '@application/auth/guard/jwt.guard';
-import { RolesGuard } from '@application/auth/guard/roles.guard';
+} from '../../../common/decorators/success-res.decorator';
+import { JwtAuthGuard } from '../../../application/auth/guard/jwt.guard';
+import { RolesGuard } from '../../../application/auth/guard/roles.guard';
 import { GetOrderResDto } from '../dto/res/order/get-order.res.dto';
 
 @ApiTags('주문')

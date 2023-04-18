@@ -1,7 +1,7 @@
 import { GetRefundsQueryDto } from '../dto/req/get-refunds.query.dto';
 import { GetRefundsForMeResDto } from '../dto/res/get-refunds-for-me.res.dto';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@infrastructure/database/prisma.service';
+import { PrismaService } from '../../../infrastructure/database/prisma.service';
 import { Prisma, RefundStatus } from '@prisma/client';
 import { CreateRefundDto } from '../dto/req/create-refund.dto';
 import { GetRefundsResDto } from '../dto/res/get-refunds.res.dto';

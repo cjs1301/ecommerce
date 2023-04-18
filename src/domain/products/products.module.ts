@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ProductsController } from './interface/products.controller';
 import { ProductsService } from './servicesLegacy/products.service';
 import { ProductsRepositoryLegacy } from './infra/db/repositoryLegacy/products.repository.legacy';
-import { PrismaModule } from '@infrastructure/database/prisma.module';
+import { PrismaModule } from '../../infrastructure/database/prisma.module';
 import { FileModule } from '../file/file.module';
-import { InfrastructureModule } from '@infrastructure/infrastructure.module';
+import { InfrastructureModule } from '../../infrastructure/infrastructure.module';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProductsRepository } from './infra/db/repository/products.repository';
 

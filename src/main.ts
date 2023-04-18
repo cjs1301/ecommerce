@@ -1,5 +1,4 @@
-import 'module-alias/register';
-import { ServerApplication } from '@application/server.app';
+import { ServerApplication } from './application/server.app';
 (async (): Promise<void> => {
     await runApplication();
 })();

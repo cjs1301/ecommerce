@@ -1,12 +1,12 @@
 import { Module, Provider } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { validationSchema } from '@infrastructure/config/vaildation.schema';
-import { PrismaModule } from '@infrastructure/database/prisma.module';
-import apiServerConfig from '@infrastructure/config/api.server.config';
-import authConfig from '@infrastructure/config/auth.config';
-import databaseConfig from '@infrastructure/config/database.config';
-import portOneConfig from '@infrastructure/config/port-one.config';
-import { LoggingModule } from '@infrastructure/logging/logging.module';
+import { validationSchema } from './config/vaildation.schema';
+import { PrismaModule } from './database/prisma.module';
+import apiServerConfig from './config/api.server.config';
+import authConfig from './config/auth.config';
+import databaseConfig from './config/database.config';
+import portOneConfig from './config/port-one.config';
+import { LoggingModule } from './logging/logging.module';
 
 const providers: Provider[] = [];
 

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CustomersRepository } from '../repository/customers.repository';
 import { UpdateCustomer } from '../dto/req/update-customer.dto';
-import { OauthUser } from '@application/auth/dto/auth.interface';
+import { OauthUser } from '../../../../application/auth/dto/auth.interface';
 import { CreateAddress } from '../dto/req/create-address.dto';
 import { UpdateAddress } from '../dto/req/update-address.dto';
 import { CustomerIncludeOption } from '../dto/req/query-customer.dto';

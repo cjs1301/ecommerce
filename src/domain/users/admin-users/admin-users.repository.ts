@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
-import { PrismaService } from '@infrastructure/database/prisma.service';
-import { AdminLoginDto } from '@application/auth/dto/admin-login.dto';
-import { CreateAdminDto } from '@application/auth/dto/create-admin.dto';
+import { PrismaService } from '../../../infrastructure/database/prisma.service';
+import { AdminLoginDto } from '../../../application/auth/dto/admin-login.dto';
+import { CreateAdminDto } from '../../../application/auth/dto/create-admin.dto';
 @Injectable()
 export class AdminUsersRepository {
     constructor(private prisma: PrismaService) {}

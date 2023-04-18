@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ConfigType } from '@nestjs/config';
-import apiServerConfig from '@infrastructure/config/api.server.config';
+import apiServerConfig from '../../infrastructure/config/api.server.config';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {

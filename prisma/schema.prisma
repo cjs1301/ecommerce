@@ -5,7 +5,7 @@ datasource db {
 }
 generator client {
 	provider = "prisma-client-js"
-	output ="../src/prisma/client"
+	// output ="./client"
 	binaryTargets = ["native", "linux-musl"]
 }
 
@@ -251,7 +251,7 @@ model Cart {
 	customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 	items CartOnProduct[]
 }
-/// 카트 아이템 입니다
+/// 카트 아이템(item) 입니다
 model CartOnProduct { //item
 	id String @id @db.VarChar(40) @default(cuid())
 	cartId String @db.VarChar(40)

@@ -20,14 +20,14 @@ import { CustomersResDto } from '../dto/res/customers.res.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
-import { Roles } from '@application/auth/decorators/roles.decorator';
-import { Role } from '@application/auth/dto/role.enum';
+} from '../../../../common/decorators/success-res.decorator';
+import { Roles } from '../../../../application/auth/decorators/roles.decorator';
+import { Role } from '../../../../application/auth/dto/role.enum';
 import { CustomerResDto } from '../dto/res/customer.res.dto';
 import { CustomerIncludeOption } from '../dto/req/query-customer.dto';
 import { Customer } from '../customer.entity';
-import { JwtAuthGuard } from '@application/auth/guard/jwt.guard';
-import { RolesGuard } from '@application/auth/guard/roles.guard';
+import { JwtAuthGuard } from '../../../../application/auth/guard/jwt.guard';
+import { RolesGuard } from '../../../../application/auth/guard/roles.guard';
 
 @Controller()
 export class CustomersController {

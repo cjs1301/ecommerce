@@ -12,9 +12,9 @@ import { AuthGuard } from '@nestjs/passport';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
-import { User } from '@application/auth/decorators/user.decorator';
-import { PassportUser } from '@application/auth/dto/auth.interface';
+} from '../../../common/decorators/success-res.decorator';
+import { User } from '../../../application/auth/decorators/user.decorator';
+import { PassportUser } from '../../../application/auth/dto/auth.interface';
 import { GetRefundsForMeResDto } from '../dto/res/get-refunds-for-me.res.dto';
 import { GetRefundsQueryDto } from '../dto/req/get-refunds.query.dto';
 import { CreateRefundDto } from '../dto/req/create-refund.dto';

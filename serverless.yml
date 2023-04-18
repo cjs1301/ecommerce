@@ -1,0 +1,79 @@
+service: e-commerce
+
+provider:
+    name: aws
+    runtime: nodejs18.x
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - 'lambda:InvokeFunction'
+              - 's3:*'
+          Resource:
+              - !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${opt:stage, self:provider.stage}-*
+              - 'arn:aws:s3:::${self:custom.bucket}/*'
+    stage: ${opt:stage, 'dev'}
+    region: ${opt:region, 'ap-northeast-2'}
+    ecr:
+        images:
+            nest-lambda:
+                path: ./
+#                platform: linux/amd64
+    environment:
+        NODE_ENV: ${self:provider.stage}
+        Bucket: ${self:custom.bucket}
+    apiGateway:
+        shouldStartNameWithService: true
+
+
+plugins:
+    - serverless-jetpack
+    - serverless-dotenv-plugin
+    - serverless-plugin-optimize
+    - serverless-plugin-warmup
+#    - serverless-webpack
+
+
+functions:
+    api:
+        # architecture: arm64
+        warmup:
+            default:
+                enabled: true
+        image:
+            name: nest-lambda
+            command:
+                - dist/lambda.handler
+            entryPoint:
+                - '/lambda-entrypoint.sh'
+        events:
+            - http:
+                  method: any
+                  path: /
+            - http:
+                  method: any
+                  path: /{any+}
+
+resources:
+    Resources:
+        ImageUpload:
+            Type: AWS::S3::Bucket
+            Properties:
+                BucketName: ${self:custom.bucket}
+                AccessControl: PublicRead
+
+custom:
+    optimize:
+        external: [ 'swagger-ui-dist' ]
+    warmup:
+        default:
+            enabled: true
+            role: IamRoleLambdaExecution
+            architecture: 'arm64'
+            events:
+                - schedule: cron(0/3 3-18 ? * MON-FRI *)
+    bucket: product-image-${opt:stage, 'dev'}
+#    webpack:
+#        webpackConfig: ./webpack.config.js
+#        includeModules: true
+#        forceExclude:
+#            - aws-sdk

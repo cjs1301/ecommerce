@@ -12,15 +12,15 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Role } from '@application/auth/dto/role.enum';
-import { Roles } from '@application/auth/decorators/roles.decorator';
+import { Role } from '../../../application/auth/dto/role.enum';
+import { Roles } from '../../../application/auth/decorators/roles.decorator';
 import { ProductsService } from '../servicesLegacy/products.service';
 import { UpdateProductDto } from './dto/req/update-product.dto';
 import { CreateProductDto } from './dto/req/create-product.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
+} from '../../../common/decorators/success-res.decorator';
 import { GetProductResDto } from './dto/res/get-product.res.dto';
 import { GetProductsResDto } from './dto/res/get-products.res.dto';
 

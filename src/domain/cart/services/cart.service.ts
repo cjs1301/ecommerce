@@ -113,7 +113,7 @@ export class CartService {
         let items: Array<CreateOrderOnProduct>;
         if (body.items.length === 0) {
             // body에 빈배열로 보낼경우 내 카트상품들을 모두 주문한다
-            const customer = await this.customersRepository.findOneById(
+            const customer: any = await this.customersRepository.findOneById(
                 customerId,
                 {
                     point: true,
@@ -147,7 +147,7 @@ export class CartService {
                 },
             );
             items =
-                customer.cart?.items.map((el) => {
+                customer.cart.items.map((el: any) => {
                     return {
                         productId: el.product?.id || '',
                         quantity: el.quantity,
@@ -171,7 +171,7 @@ export class CartService {
         } else {
             // 직접 넣어준 상품들로 주문한다
             items = body.items;
-            const { point } = await this.customersRepository.findOneById(
+            const { point }: any = await this.customersRepository.findOneById(
                 customerId,
                 {
                     point: true,
