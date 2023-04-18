@@ -10,22 +10,22 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PassportUser } from '@application/auth/dto/auth.interface';
+import { PassportUser } from '../../../../application/auth/dto/auth.interface';
 
 import { CreateAddress } from '../dto/req/create-address.dto';
 import { UpdateCustomer } from '../dto/req/update-customer.dto';
 import { CustomersService } from '../services/customers.service';
 import { UpdateAddress } from '../dto/req/update-address.dto';
 import { CustomerIncludeOption } from '../dto/req/query-customer.dto';
-import { JwtAuthGuard } from '@application/auth/guard/jwt.guard';
+import { JwtAuthGuard } from '../../../../application/auth/guard/jwt.guard';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
+} from '../../../../common/decorators/success-res.decorator';
 import { CustomerResDto } from '../dto/res/customer.res.dto';
 import { Customer } from '../customer.entity';
 import { AddressResDto } from '../dto/res/address.res.dto';
-import { User } from '@application/auth/decorators/user.decorator';
+import { User } from '../../../../application/auth/decorators/user.decorator';
 
 @ApiTags('서비스')
 @Controller('me')

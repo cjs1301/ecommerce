@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@infrastructure/database/prisma.service';
+import { PrismaService } from '../../../../../infrastructure/database/prisma.service';
 import { UpdateProductDto } from '../../../interface/dto/req/update-product.dto';
 import { CreateProductDto } from '../../../interface/dto/req/create-product.dto';
 import cuid from 'cuid';

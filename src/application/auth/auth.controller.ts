@@ -21,12 +21,12 @@ import { Request, Response } from 'express';
 import { Role } from './dto/role.enum';
 import { AuthService } from './auth.service';
 import { JwtPayload, PassportUser } from './dto/auth.interface';
-import { Roles } from '@application/auth/decorators/roles.decorator';
+import { Roles } from '../../application/auth/decorators/roles.decorator';
 import { User } from './decorators/user.decorator';
-import { ApiSingleDataResponse } from '@common/decorators/success-res.decorator';
+import { ApiSingleDataResponse } from '../../common/decorators/success-res.decorator';
 import { AdminLoginResDto } from './dto/admin-login.res.dto';
-import { AdminLoginDto } from '@application/auth/dto/admin-login.dto';
-import { CreateAdminDto } from '@application/auth/dto/create-admin.dto';
+import { AdminLoginDto } from '../../application/auth/dto/admin-login.dto';
+import { CreateAdminDto } from '../../application/auth/dto/create-admin.dto';
 
 @ApiTags('로그인')
 @Controller('auth')

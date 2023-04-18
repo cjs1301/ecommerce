@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OauthUser, PassportUser } from '@application/auth/dto/auth.interface';
+import { OauthUser } from '../../../../application/auth/dto/auth.interface';
 import { PrismaService } from '../../../../infrastructure/database/prisma.service';
 import { CreateAddress } from '../dto/req/create-address.dto';
 import { UpdateCustomer } from '../dto/req/update-customer.dto';
@@ -12,8 +12,6 @@ export class CustomersRepository {
 
     async findOneByIdWithInclude(id: string, include: Prisma.CustomerInclude) {
         try {
-            // const include =
-            //     Object.keys(includeOption).length === 0 ? null : includeOption;
             return this.prisma.customer.findUnique({
                 where: { id: id },
                 include,
@@ -23,10 +21,10 @@ export class CustomersRepository {
         }
     }
 
-    async findOneById(id: string, select: Prisma.CustomerSelect) {
+    async findOneById(id: string, select: Prisma.CustomerSelect | undefined) {
         return this.prisma.customer.findUniqueOrThrow({
             where: { id: id },
-            select,
+            select: select,
         });
     }
     async findOneByOauthId(oauthId: string) {

@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 import { CustomersService } from '../../domain/users/customers/services/customers.service';
 import { Role } from './dto/role.enum';
 import { AdminUsersService } from '../../domain/users/admin-users/admin-users.service';
-import { AdminLoginDto } from '@application/auth/dto/admin-login.dto';
-import { CreateAdminDto } from '@application/auth/dto/create-admin.dto';
-import authConfig from '@infrastructure/config/auth.config';
+import { AdminLoginDto } from '../../application/auth/dto/admin-login.dto';
+import { CreateAdminDto } from '../../application/auth/dto/create-admin.dto';
+import authConfig from '../../infrastructure/config/auth.config';
 import { ConfigType } from '@nestjs/config';
 
 @Injectable()

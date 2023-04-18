@@ -3,7 +3,7 @@ import { RootModule } from './root.module';
 import { ConfigService } from '@nestjs/config';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import { PrismaService } from '@infrastructure/database/prisma.service';
+import { PrismaService } from '../infrastructure/database/prisma.service';
 import {
     DocumentBuilder,
     OpenAPIObject,
@@ -14,13 +14,11 @@ import {
 
 export class ServerApplication {
     public async run(): Promise<void> {
-        const app = await NestFactory.create(RootModule, {
-            snapshot: true,
-        });
+        const app = await NestFactory.create(RootModule);
         const prismaService = app.get(PrismaService);
         const configService = app.get(ConfigService);
-        const host = configService.get('HOST') || '0.0.0.0';
-        const port = configService.get('PORT') || 4000;
+        const host = configService.get('HOST');
+        const port = configService.get('PORT');
 
         app.useGlobalPipes(
             new ValidationPipe({

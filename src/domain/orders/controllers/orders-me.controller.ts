@@ -7,16 +7,16 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
-import { User } from '@application/auth/decorators/user.decorator';
+import { User } from '../../../application/auth/decorators/user.decorator';
 import { OrdersService } from '../services/orders.service';
-import { PassportUser } from '@application/auth/dto/auth.interface';
+import { PassportUser } from '../../../application/auth/dto/auth.interface';
 import { GetOrdersQueryDto } from '../dto/req/get-orders.query.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '@common/decorators/success-res.decorator';
+} from '../../../common/decorators/success-res.decorator';
 import { GetOrdersForMeResDto } from '../dto/res/order/get-orders-for-me.res.dto';
 import { OrderForMeResDto } from '../dto/res/order/order-for-me.res.dto';
 

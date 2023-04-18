@@ -9,9 +9,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { User } from '../../../core/common/decorators/user.decorator';
 import { CartService } from '../services/cart.service';
-import { PassportUser } from '@application/auth/dto/auth.interface';
+import { PassportUser } from '../../../application/auth/dto/auth.interface';
 import { AddCartItem } from '../dto/req/add-cartItem.dto';
 import { CheckoutReqDto } from '../dto/req/checkout.req.dto';
 import { CheckoutResDto } from '../dto/res/checkout.res.dto';
@@ -19,9 +18,10 @@ import { CartItemResDto } from '../dto/res/cart-item.res.dto';
 import {
     ApiMultipleDataResponse,
     ApiSingleDataResponse,
-} from '../../../core/common/decorators/success-res.decorator';
+} from '../../../common/decorators/success-res.decorator';
 import { DeleteCartItemQueryDto } from '../dto/req/delete-cart-item.query.dto';
 import { CartItemsResDto } from '../dto/res/cart-items.res.dto';
+import { User } from '../../../application/auth/decorators/user.decorator';
 @ApiTags('서비스', '장바구니')
 @Controller('me/cart')
 @ApiBearerAuth('accessToken')
@@ -37,7 +37,7 @@ export class MeCartController {
     @Get()
     async getCartForMe(
         @User() customer: PassportUser,
-    ): Promise<CartItemsResDto[]> {
+    ) /*: Promise<CartItemsResDto[]>*/ {
         return this.cartService.getCart(customer.id);
     }
 

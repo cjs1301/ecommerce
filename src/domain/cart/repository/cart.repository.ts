@@ -368,7 +368,7 @@ export class CartRepository {
                     return (acc =
                         acc +
                         bundleItemPrice +
-                        cur.product.price * cur.quantity);
+                        (cur.product?.price || 0) * cur.quantity);
                 },
                 0,
             );
